@@ -1,0 +1,27 @@
+.container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.voteAvg {
+    color: #fc0;
+    font-weight: bold;
+}
+
+.voteAvg::before {
+    content: " ";
+}
+
+.voteAvg::after {
+    content: " \2605"
+}
+
+.overview {
+    margin: 20px auto;
+    max-width: min(800px, 80vw);
+}

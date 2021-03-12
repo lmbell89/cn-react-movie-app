@@ -1,0 +1,11 @@
+.sortButtons {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 100%;
+    border: 2px solid #777;
+}
+
+.sortButtons>button:nth-child(2) {
+    border-left: 2px solid #777;
+    border-right: 2px solid #777;
+}

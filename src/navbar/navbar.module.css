@@ -1,0 +1,55 @@
+.nav {
+    position: fixed;
+    background-color: #101010;
+    width: 100%;
+    text-align: center;
+    height: 55px;
+    padding: 5px;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.appTitle {
+    position: absolute;
+    left: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0;
+    color: #ddd;
+}
+
+.search {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    padding: 2px;
+}
+
+.searchInput {
+    border: none;
+    outline: none;
+    padding-bottom: 3px;
+}
+
+.searchButton {
+    border: none;
+    background: none;
+}
+
+.searchButton:hover {
+    cursor: pointer;
+}
+
+@media only screen and (min-width: 800px) {
+    .appTitle {
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+}

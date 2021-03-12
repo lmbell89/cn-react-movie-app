@@ -1,0 +1,25 @@
+.tile {
+    margin: auto;
+    text-align: center;
+    text-decoration: none;
+    padding: 5px;
+    height: 100%;
+    color: #ddd;
+}
+
+.title {
+    font-weight: bold;
+}
+
+.subText {
+    display: flex;
+    justify-content: space-around;
+}
+
+.rating {
+    color: #fc0
+}
+
+.rating::after {
+    content: " \2605"
+}
