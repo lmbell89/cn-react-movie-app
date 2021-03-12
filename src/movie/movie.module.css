@@ -1,6 +1,26 @@
 .container {
     text-align: center;
     margin-top: 20px;
+    position: relative;
+}
+
+.backButton {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    background: #222;
+    border: 2px solid #777;
+    color: #eee;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: all 0.25s;
+}
+
+.backButton:hover {
+    cursor: pointer;
+    background: #777;
+    color: #000;
+    font-weight: bold;
 }
 
 .title {

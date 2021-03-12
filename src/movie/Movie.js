@@ -1,13 +1,21 @@
 import React from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useHistory } from 'react-router-dom'
 
 import styles from './movie.module.css'
 
 export const Movie = () => {
     const location = useLocation()
+    const history = useHistory()
 
     return (
         <div className={styles.container}>
+            <button 
+                onClick={() => history.goBack()} 
+                className={styles.backButton}
+            >
+                Back
+            </button>
+
             <img 
                 className={styles.image} 
                 src={location.state.imgSrc} 
