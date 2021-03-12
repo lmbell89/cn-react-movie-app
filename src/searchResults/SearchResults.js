@@ -74,6 +74,7 @@ export const SearchResults = (props) => {
                 pageLinkClassName="paginateAnchor"
                 previousLinkClassName="paginateAnchor"
                 nextLinkClassName="paginateAnchor"
+                breakLinkClassName="paginateAnchor"
             />
         </div>
     )

@@ -21,7 +21,6 @@ body {
   border: 2px solid #777;
   border-right: none;
   text-align: center;
-  padding: 5px 10px;
   outline: none;
 }
 
@@ -41,4 +40,6 @@ body {
 
 .paginateAnchor {
   outline: none;
+  line-height: 1.75;
+  padding: 0 10px;
 }
