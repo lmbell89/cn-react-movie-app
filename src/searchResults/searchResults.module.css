@@ -1,5 +1,6 @@
 .container {
     margin-top: 20px;
+    position: relative;
 }
 
 .tileContainer {
@@ -8,9 +9,14 @@
     grid-template-columns: 1fr 1fr;
 }
 
-.spinner {
+.spinner, .noResults {
     position: absolute;
-    top: max(150px, 50%); 
+    top: calc(30vh + 50px); 
+}
+
+.noResults {
+    width: 100%;
+    text-align: center;
 }
 
 @media only screen and (min-width: 700px) {

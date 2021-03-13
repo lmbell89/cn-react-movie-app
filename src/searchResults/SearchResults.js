@@ -31,7 +31,11 @@ export const SearchResults = (props) => {
 
 
         if (!data || !data.totalItems) {
-            setResults("No results found")           
+            setResults(
+                <div className={styles.noResults}>
+                    No results found
+                </div>
+            )           
         } else {
             const tiles = data.results.map(movie => {
                 return <Tile
