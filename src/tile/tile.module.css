@@ -5,6 +5,18 @@
     padding: 5px;
     height: 100%;
     color: #ddd;
+    transition: scale 0.25s;
+    width: 200px;
+}
+
+.tile:hover {
+    text-decoration: none;
+    color: white;
+    transform: scale(1.05);
+}
+
+.image {
+    border-radius: 10px;
 }
 
 .title {

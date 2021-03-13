@@ -1,45 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
 * {
   box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
   background: #222;
   color: #ddd;
+  margin: 0;
+}
+
+.App {
+  padding-bottom: 20px;
+  min-height: 100vh;
 }
 
 .pageContent {
   padding-top: 55px;
-}
-
-.paginate {
-  display: flex;
-  list-style: none;
-  justify-content: center;
-}
-
-.paginateButton, .paginateNextButton {
-  border: 2px solid #777;
-  border-right: none;
   text-align: center;
-  outline: none;
-}
-
-.paginateNextButton {
-  border-right: 2px solid #777;
-}
-
-.paginateActiveButton {
-  background-color: #777;
-  color: #222;
-  font-weight: bold;
-}
-
-.paginateButton:hover, .paginateNextButton:hover {
-  cursor: pointer;
-}
-
-.paginateAnchor {
-  outline: none;
-  line-height: 1.75;
-  padding: 0 10px;
 }

@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
+import ButtonGroup from 'react-bootstrap/ButtonGroup'
+import ToggleButton from 'react-bootstrap/ToggleButton'
 
 import { SearchResults } from '../searchResults'
-import { SortButton } from './sortButton/SortButton'
-import styles from './homepage.module.css'
 
-export const Homepage = (props) => {
+export const Homepage = () => {
     const [sortBy, setSortBy] = useState('popularity')
 
     const searchParams = {
@@ -13,15 +13,31 @@ export const Homepage = (props) => {
         minVotes: 200
     }
 
-    return (
-        <div>
-            <div className={styles.sortButtons}>
-                <SortButton onClick={setSortBy} type="popularity" selected={sortBy === "popularity"}/>
-                <SortButton onClick={setSortBy} type="date" selected={sortBy === "date"}/>
-                <SortButton onClick={setSortBy} type="rating" selected={sortBy === "rating"}/>
-            </div>
+    const sortButtons = [
+        { name: 'Most Popular', value: 'popularity' },
+        { name: 'New Releases', value: 'date' },
+        { name: 'Highest Rated', value: 'rating' },
+      ];
 
-            <SearchResults searchParams={searchParams} advanced={true} />
-        </div>
+    return (
+        <>
+            <ButtonGroup toggle className="mt-3">
+                {sortButtons.map((radio, i) => (
+                    <ToggleButton
+                        key={i}
+                        type="radio"
+                        variant="primary"
+                        name="radio"
+                        value={radio.value}
+                        checked={sortBy === radio.value}
+                        onChange={(e) => setSortBy(e.currentTarget.value)}
+                    >
+                        {radio.name}
+                    </ToggleButton>
+                ))}
+            </ButtonGroup>
+
+            <SearchResults searchParams={searchParams} searchType="detailed" />
+        </>
     )
 }

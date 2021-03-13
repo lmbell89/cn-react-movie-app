@@ -13,10 +13,8 @@ export const Search = (props) => {
     const location = useLocation()
 
     const params = { title: location.state?.title } || { title: "" }
-
-    console.log(location)
-
+    
     return (
-        <SearchResults searchParams={params} advanced={false} />
+        <SearchResults searchParams={params} searchType="basic" />
     )
 }

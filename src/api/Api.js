@@ -9,7 +9,7 @@ const parseMovie = async (json) => {
         img = noFile
     }
 
-    return {
+    const movie = {
         title: json.title,
         imgSrc: img,
         voteAvg: json.vote_average.toFixed(1),
@@ -17,6 +17,8 @@ const parseMovie = async (json) => {
         overview: json.overview,
         movieId: json.id
     }
+
+    return movie
 }
 
 const search = async (url) => {
@@ -37,7 +39,7 @@ const search = async (url) => {
 }
 
 const getImage = async (path) => {   
-    const src = await fetch(`${Api.IMAGE_BASE_URL}/w200/${path}`)
+    const src = await fetch(`${IMAGE_BASE_URL}/w200/${path}`)
         .then(response => response.blob())
         .then(blob => URL.createObjectURL(blob))
 
@@ -45,8 +47,6 @@ const getImage = async (path) => {
 }
 
 const getQueryString = (searchParams) => {
-    let queries = []
-
     const sortTypes = {
         'title': 'original_title.asc',
         'rating': 'vote_average.desc',
@@ -54,8 +54,11 @@ const getQueryString = (searchParams) => {
         'popularity': 'popularity.desc'
     }
 
+    let queries = [`api_key=${Api.KEY}`]
+
     if (searchParams.title) {
-        queries.push(searchParams.title.split(" ").filter(n => n).join("+"))
+        const keyWords = searchParams.title.split(" ").filter(n => n).join("+")
+        queries.push(`query=${keyWords}`)
     }
 
     if (searchParams.sort) {
@@ -85,26 +88,32 @@ const getQueryString = (searchParams) => {
     return queries.join("&")
 }
 
+const MOVIE_BASE_URL = "https://api.themoviedb.org/3"
+const IMAGE_BASE_URL = "https://image.tmdb.org/t/p"
+
 
 export class Api {
     static KEY = "0f0a1bd520946ddd18204d0ae65f52ed"
-    static MOVIE_BASE_URL = "https://api.themoviedb.org/3"
-    static IMAGE_BASE_URL = "https://image.tmdb.org/t/p"
 
     static getMovieById = async (id) => {
-        const url = `${Api.MOVIE_BASE_URL}/movie/${id}?api_key=${Api.KEY}`
+        const url = `${MOVIE_BASE_URL}/movie/${id}?api_key=${Api.KEY}`
         return fetch(url).then(res => res.json()).then(json => parseMovie(json))
     }
 
     static getMovieByTitle = async (searchParams) => {
         const queryString = getQueryString(searchParams)
-        const url = `${Api.MOVIE_BASE_URL}/search/movie?api_key=${Api.KEY}&query=${queryString}`
+        const url = `${MOVIE_BASE_URL}/search/movie?${queryString}`
         return await search(url)
     }
 
     static getSearchResults = async (searchParams) => {
         const queryString = getQueryString(searchParams)
-        const url = `${Api.MOVIE_BASE_URL}/discover/movie?api_key=${Api.KEY}&${queryString}`
+        const url = `${MOVIE_BASE_URL}/discover/movie?${queryString}`
+        return await search(url)
+    }
+
+    static getSimilarMovies = async (id, page) => {
+        const url = `${MOVIE_BASE_URL}/movie/${id}/similar?api_key=${Api.KEY}&page=${page}`
         return await search(url)
     }
 }

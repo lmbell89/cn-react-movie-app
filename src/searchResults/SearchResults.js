@@ -1,41 +1,42 @@
 import React, { useEffect, useState } from 'react'
-import ReactPaginate from 'react-paginate';
+import Spinner from 'react-bootstrap/Spinner'
 
 import { Api } from '../api'
 import { Tile } from '../tile'
+import { SearchPagination } from './searchPagination'
 import styles from './searchResults.module.css'
-import '../App.css'
 
 export const SearchResults = (props) => {
-    const [tiles, setTiles] = useState([])
-    const [pageCount, setPageCount] = useState(0)
     const [currentPage, setCurrentPage] = useState(1)
+    const [results, setResults] = useState(null)    
 
     useEffect(() => {
         fetchApiData(currentPage)
     }, [props.searchParams])
 
+
+
     const fetchApiData = async (page) => {
         let data
-        let newTiles
-
         const params = props.searchParams
         params.page = page
 
-        if (props.advanced) {
+        if (props.searchType === "detailed") {
             data = await Api.getSearchResults(params)
-        } else {
+        } else if (props.searchType === "basic") {
             data = await Api.getMovieByTitle(params)
+        } else {
+            data = await Api.getSimilarMovies(params.movieId, params.page)
         }
 
-        if (!data) {
-            setPageCount(0)
-            newTiles = "No results found"            
+
+        if (!data || !data.totalItems) {
+            setResults("No results found")           
         } else {
-            setPageCount(data.pageCount)
-            newTiles = data.results.map(movie => {
+            const tiles = data.results.map(movie => {
                 return <Tile
                     key={movie.movieId}
+                    movieId={movie.movieId}
                     title={movie.title} 
                     imgSrc={movie.imgSrc} 
                     voteAvg={movie.voteAvg} 
@@ -43,39 +44,45 @@ export const SearchResults = (props) => {
                     overview={movie.overview}
                 />
             })
+
+            const selectPage = (i) => {
+                setResults(null)
+                setCurrentPage(i)
+                fetchApiData(i)
+            }
+
+            const pagination = (
+                <SearchPagination 
+                    pageCount={data.pageCount}
+                    currentPage={currentPage}
+                    onClick={selectPage}
+                />
+            )
+
+            setResults(
+                <>
+                    <div className={styles.tileContainer}>
+                        {tiles}
+                    </div>                    
+                    {pagination}
+                </>
+            )
         }
-
-        setTiles(newTiles)
     }
 
-    const handlePageClick = (data) => {
-        setCurrentPage(data.selected + 1)
-        fetchApiData(data.selected + 1)
-    }
-
+    const spinner = (
+        <Spinner 
+            className={styles.spinner} 
+            animation="border" 
+            variant="info"
+        >
+            <span className="sr-only">Loading...</span>
+        </Spinner>
+    )
 
     return (
         <div className={styles.container}>
-            <div className={styles.tileContainer}>
-                {tiles}
-            </div>
-                      
-            <ReactPaginate 
-                pageCount={pageCount} 
-                pageRangeDisplayed={4} 
-                marginPagesDisplayed={0} 
-                onPageChange={handlePageClick}
-                containerClassName="paginate"
-                pageClassName="paginateButton"
-                breakClassName="paginateButton"
-                previousClassName="paginateButton"
-                nextClassName="paginateNextButton"
-                activeClassName="paginateActiveButton"
-                pageLinkClassName="paginateAnchor"
-                previousLinkClassName="paginateAnchor"
-                nextLinkClassName="paginateAnchor"
-                breakLinkClassName="paginateAnchor"
-            />
+            {results || spinner}
         </div>
     )
 }

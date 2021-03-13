@@ -8,7 +8,7 @@ export const Tile = (props) => {
         <Link 
             className={styles.tile} 
             to={{
-                pathname: `/movie`,
+                pathname: `/movie/${props.movieId}`,
                 state: {
                     title: props.title,
                     imgSrc: props.imgSrc,
