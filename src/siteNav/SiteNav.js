@@ -28,7 +28,12 @@ export const SiteNav = () => {
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="mr-auto">
-
+                    <Nav.Item>
+                        <Nav.Link href="/">Home</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link href="/search">Find Movies</Nav.Link>
+                    </Nav.Item>
                 </Nav>
                 <Form inline onSubmit={handleSubmit}>
                     <FormControl 

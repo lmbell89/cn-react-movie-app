@@ -81,8 +81,28 @@ const getQueryString = (searchParams) => {
         queries.push(`vote_count.gte=${searchParams.minVotes}`)
     }
 
+    if (searchParams.genre) {
+        queries.push(`with_genres=${searchParams.genre}`)
+    }
+
     if (searchParams.year) {
         queries.push(`year=${searchParams.year}`)
+    }
+
+    if (searchParams.latestDate) {
+        queries.push(`release_date.lte=${searchParams.latestDate}`)
+    }
+
+    if (searchParams.earliestDate) {
+        queries.push(`release_date.gte=${searchParams.earliestDate}`)
+    }
+
+    if (searchParams.year) {
+        queries.push(`primary_release_year=${searchParams.year}`)
+    }
+
+    if (searchParams.englishOnly) {
+        queries.push(`with_original_language=en`)        
     }
 
     return queries.join("&")
@@ -115,5 +135,10 @@ export class Api {
     static getSimilarMovies = async (id, page) => {
         const url = `${MOVIE_BASE_URL}/movie/${id}/similar?api_key=${Api.KEY}&page=${page}`
         return await search(url)
+    }
+
+    static getGenres = async () => {
+        const url = `${MOVIE_BASE_URL}/genre/movie/list?api_key=${Api.KEY}`
+        return await fetch(url).then(res => res.json())
     }
 }

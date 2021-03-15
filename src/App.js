@@ -1,13 +1,21 @@
-import { Switch, Route } from "react-router-dom";
+import React, { useState, useEffect } from 'react'
+import { Switch, Route } from "react-router-dom"
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { SiteNav } from './siteNav'
 import { Homepage } from './homepage'
 import { Search } from './search'
 import { Movie } from './movie'
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Api } from './api'
 import './App.css';
 
 function App() {
+  const [genres, setGenres] = useState([])
+
+  useEffect(() => {
+      Api.getGenres().then(json => setGenres(json.genres))
+  }, []) 
+
   return (
     <div className="App bg-secondary">
       <SiteNav/>
@@ -21,10 +29,10 @@ function App() {
             <Homepage page={1} />
           </Route>
           <Route path="/search">
-            <Search />
+            <Search genres={genres} />
           </Route>
           <Route path="/movie/:id">
-            <Movie />
+            <Movie genres={genres} />
           </Route>
         </Switch>
       </div>

@@ -6,14 +6,15 @@ export const SearchPagination = (props) => {
     const max = Math.min(props.pageCount, min + 4)
     
     let items = [
-        <Pagination.Prev onClick={() => props.onClick(props.currentPage - 1)}>
+        <Pagination.Prev key={0} onClick={() => props.onClick(props.currentPage - 1)}>
             Previous
         </Pagination.Prev>
     ]
 
     for (let i = min; i < max + 1; i++) {
         items.push(
-            <Pagination.Item 
+            <Pagination.Item
+                key={i}
                 onClick={() => props.onClick(i)} 
                 active={props.currentPage === i}
             >
@@ -22,7 +23,7 @@ export const SearchPagination = (props) => {
         )
     }        
     items.push(
-        <Pagination.Next onClick={() => props.onClick(props.currentPage + 1)}>
+        <Pagination.Next key={max + 1} onClick={() => props.onClick(props.currentPage + 1)}>
             Next
         </Pagination.Next>
     )

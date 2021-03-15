@@ -1,17 +1,24 @@
-import React from 'react'
-import { useLocation, useHistory } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useParams, useHistory } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 
+import { Api } from '../api'
 import { SearchResults } from '../searchResults'
 import styles from './movie.module.css'
 
 export const Movie = () => {
-    const location = useLocation()
+    const [movieData, setMovieData] = useState(null)
+
+    const movieId = useParams().id
     const history = useHistory()
+
+    useEffect(() => {
+        (async() => setMovieData(await Api.getMovieById(movieId)))()        
+    }, [movieId])
 
     return (
         <>
-            <div className={styles.container}>
+            <div className={movieData ? styles.container : styles.hidden}>
                 <Button 
                     onClick={() => history.goBack()} 
                     variant="outline-dark"
@@ -22,30 +29,30 @@ export const Movie = () => {
 
                 <img 
                     className={styles.image} 
-                    src={location.state.imgSrc} 
-                    alt={`${location.state.title} poster`}
+                    src={movieData?.imgSrc} 
+                    alt={`${movieData?.title} poster`}
                 />
-                <div className={styles.title}>{location.state.title}</div>            
+                <div className={styles.title}>{movieData?.title}</div>            
                 <div>
                     <div>
                         Averate Rating:
                         <span className={styles.voteAvg}>
-                            {location.state.voteAvg}
+                            {movieData?.voteAvg}
                         </span>
                     </div>
 
                     <div className={styles.releaseDate}>
-                        Release Date: {location.state.releaseDate}
+                        Release Date: {movieData?.releaseDate}
                     </div>
                 </div>
-                <div className={styles.overview}>{location.state.overview}</div>
+                <div className={styles.overview}>{movieData?.overview}</div>
             </div>
 
             <h2 className={styles.similarFilms}>Similar Films</h2>
 
             <SearchResults 
-                searchParams={{movieId: location.state.movieId}} 
-                searchType="detailed" 
+                searchParams={{movieId: movieId}} 
+                searchType="similar" 
             />
         </>
 

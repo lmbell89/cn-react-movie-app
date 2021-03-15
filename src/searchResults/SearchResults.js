@@ -8,15 +8,21 @@ import styles from './searchResults.module.css'
 
 export const SearchResults = (props) => {
     const [currentPage, setCurrentPage] = useState(1)
-    const [results, setResults] = useState(null)    
+    const [results, setResults] = useState(null)
+    const [pageCount, setPageCount] = useState(0)
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         fetchApiData(currentPage)
     }, [props.searchParams])
 
+    const fetchApiData = async (page) => { 
+        if (!props.searchParams) {
+            return
+        }
 
+        setLoading(true)
 
-    const fetchApiData = async (page) => {
         let data
         const params = props.searchParams
         params.page = page
@@ -25,10 +31,9 @@ export const SearchResults = (props) => {
             data = await Api.getSearchResults(params)
         } else if (props.searchType === "basic") {
             data = await Api.getMovieByTitle(params)
-        } else {
+        } else if (props.searchType === "similar") {
             data = await Api.getSimilarMovies(params.movieId, params.page)
         }
-
 
         if (!data || !data.totalItems) {
             setResults(
@@ -37,6 +42,8 @@ export const SearchResults = (props) => {
                 </div>
             )           
         } else {
+            setPageCount(data.pageCount)
+
             const tiles = data.results.map(movie => {
                 return <Tile
                     key={movie.movieId}
@@ -49,34 +56,20 @@ export const SearchResults = (props) => {
                 />
             })
 
-            const selectPage = (i) => {
-                setResults(null)
-                setCurrentPage(i)
-                fetchApiData(i)
-            }
-
-            const pagination = (
-                <SearchPagination 
-                    pageCount={data.pageCount}
-                    currentPage={currentPage}
-                    onClick={selectPage}
-                />
-            )
-
-            setResults(
-                <>
-                    <div className={styles.tileContainer}>
-                        {tiles}
-                    </div>                    
-                    {pagination}
-                </>
-            )
+            setResults(tiles)
+            setLoading(false)
         }
+    }
+
+    const selectPage = (i) => {
+        setResults(null)
+        setCurrentPage(i)
+        fetchApiData(i)
     }
 
     const spinner = (
         <Spinner 
-            className={styles.spinner} 
+            className={loading ? styles.spinner : styles.hidden} 
             animation="border" 
             variant="info"
         >
@@ -86,7 +79,15 @@ export const SearchResults = (props) => {
 
     return (
         <div className={styles.container}>
-            {results || spinner}
+            <div className={loading ? styles.hidden : styles.tileContainer}>
+                {results}
+            </div>            
+            {spinner}
+            <SearchPagination 
+                pageCount={pageCount}
+                currentPage={currentPage}
+                onClick={selectPage}
+            />
         </div>
     )
 }
