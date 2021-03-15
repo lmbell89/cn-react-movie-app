@@ -4,20 +4,26 @@ import ToggleButton from 'react-bootstrap/ToggleButton'
 
 import { SearchResults } from '../searchResults'
 
-export const Homepage = () => {
+export const Homepage = (props) => {
     const [sortBy, setSortBy] = useState('popularity')
-
-    const searchParams = {
-        sort: sortBy,
-        minRating: 7.5,
-        minVotes: 200
-    }
 
     const sortButtons = [
         { name: 'Most Popular', value: 'popularity' },
         { name: 'New Releases', value: 'date' },
         { name: 'Highest Rated', value: 'rating' },
-      ];
+    ]
+
+    const handleChange = e => {
+        const searchParams = {
+            searchType: "detailed",
+            sort: e.currentTarget.value,
+            minRating: 7.5,
+            minVotes: 200
+        }
+
+        setSortBy(e.currentTarget.value)
+        props.handleParams(searchParams)
+    }
 
     return (
         <>
@@ -30,14 +36,19 @@ export const Homepage = () => {
                         name="radio"
                         value={radio.value}
                         checked={sortBy === radio.value}
-                        onChange={(e) => setSortBy(e.currentTarget.value)}
+                        onChange={handleChange}
                     >
                         {radio.name}
                     </ToggleButton>
                 ))}
             </ButtonGroup>
 
-            <SearchResults searchParams={searchParams} searchType="detailed" />
+            <SearchResults 
+                searchParams={props.searchParams} 
+                searchType="detailed" 
+                currentPage={props.currentPage}
+                setCurrentPage={props.setCurrentPage}
+            />
         </>
     )
 }

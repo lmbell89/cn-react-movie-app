@@ -8,6 +8,7 @@ import styles from './movie.module.css'
 
 export const Movie = () => {
     const [movieData, setMovieData] = useState(null)
+    const [currentPage, setCurrentPage] = useState(1)
 
     const movieId = useParams().id
     const history = useHistory()
@@ -52,7 +53,9 @@ export const Movie = () => {
 
             <SearchResults 
                 searchParams={{movieId: movieId}} 
-                searchType="similar" 
+                searchType="similar"
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
             />
         </>
 

@@ -1,31 +1,24 @@
 import React, { useState, useRef } from 'react'
-import { useLocation } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import Accordion from 'react-bootstrap/Accordion'
 import Card from 'react-bootstrap/Card'
 
 import { SearchResults } from '../searchResults'
 import { SearchForm } from './searchForm'
+import styles from './search.module.css'
 
 export const Search = (props) => {
-    const [advancedParams, setAdvancedParams] = useState(null)
+    const [firstVisit, setFirstVisit] = useState(props.searchParams.searchType !== "basic")
 
-    const location = useLocation()
-
-    const searchType = advancedParams !== null ? "detailed" : "basic"
     const toggleButton = useRef()
-    const toggleAccordion = () => toggleButton.current.click()
-
-    let params
-    if (advancedParams) {
-        params = advancedParams
-    } else if (location.state?.title) {
-        params = { title: location.state.title }
+    const toggleAccordion = () => {
+        setFirstVisit(false)
+        toggleButton.current.click()
     }
 
     return (
         <>
-            <Accordion defaultActiveKey={location.state || "0"}>
+            <Accordion defaultActiveKey={firstVisit ? "0" : null}>
                 <Card bg="secondary">
                     <Card.Header>
                         <Accordion.Toggle 
@@ -42,14 +35,22 @@ export const Search = (props) => {
                             <SearchForm
                                 genres={props.genres}
                                 toggleAccordion={toggleAccordion}
-                                setAdvancedParams={setAdvancedParams}
+                                handleParams={props.handleParams}
                             />
                         </Card.Body>
                     </Accordion.Collapse>
                 </Card>
             </Accordion>
 
-            <SearchResults searchParams={params} searchType={searchType} />
-        </>        
+
+            <div className={firstVisit ? styles.hidden : null}>
+                <SearchResults 
+                    searchParams={props.searchParams}
+                    currentPage={props.currentPage}
+                    setCurrentPage={props.setCurrentPage}
+                />
+            </div>
+
+        </>
     )
 }

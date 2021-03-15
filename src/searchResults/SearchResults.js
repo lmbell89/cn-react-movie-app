@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Spinner from 'react-bootstrap/Spinner'
+import Alert from 'react-bootstrap/Alert'
+import Col from 'react-bootstrap/Col'
 
 import { Api } from '../api'
 import { Tile } from '../tile'
@@ -7,14 +9,22 @@ import { SearchPagination } from './searchPagination'
 import styles from './searchResults.module.css'
 
 export const SearchResults = (props) => {
-    const [currentPage, setCurrentPage] = useState(1)
+    //const [currentPage, setCurrentPage] = useState(1)
     const [results, setResults] = useState(null)
     const [pageCount, setPageCount] = useState(0)
     const [loading, setLoading] = useState(false)
+    const [noResults, setNoResults] = useState(false)
 
     useEffect(() => {
-        fetchApiData(currentPage)
+        fetchApiData(props.currentPage)
     }, [props.searchParams])
+
+
+    const selectPage = (i) => {
+        setResults(null)
+        props.setCurrentPage(i)
+        fetchApiData(i)
+    }
 
     const fetchApiData = async (page) => { 
         if (!props.searchParams) {
@@ -27,22 +37,19 @@ export const SearchResults = (props) => {
         const params = props.searchParams
         params.page = page
 
-        if (props.searchType === "detailed") {
+        if (props.searchParams.searchType === "detailed") {
             data = await Api.getSearchResults(params)
-        } else if (props.searchType === "basic") {
+        } else if (props.searchParams.searchType === "basic") {
             data = await Api.getMovieByTitle(params)
-        } else if (props.searchType === "similar") {
+        } else if (props.searchParams.searchType === "similar") {
             data = await Api.getSimilarMovies(params.movieId, params.page)
         }
 
         if (!data || !data.totalItems) {
-            setResults(
-                <div className={styles.noResults}>
-                    No results found
-                </div>
-            )           
+            setNoResults(true)  
         } else {
             setPageCount(data.pageCount)
+            setNoResults(false)
 
             const tiles = data.results.map(movie => {
                 return <Tile
@@ -56,38 +63,44 @@ export const SearchResults = (props) => {
                 />
             })
 
-            setResults(tiles)
-            setLoading(false)
+            setResults(tiles)            
         }
+
+        setLoading(false)
     }
 
-    const selectPage = (i) => {
-        setResults(null)
-        setCurrentPage(i)
-        fetchApiData(i)
-    }
-
-    const spinner = (
-        <Spinner 
-            className={loading ? styles.spinner : styles.hidden} 
-            animation="border" 
-            variant="info"
-        >
-            <span className="sr-only">Loading...</span>
-        </Spinner>
+    const alert = (
+        <Col className="mx-auto" xs={12} sm={10} md={8} lg={6}>
+            <Alert variant="dark" className="mx-auto">
+                No results found.
+            </Alert>
+        </Col>
     )
 
     return (
         <div className={styles.container}>
-            <div className={loading ? styles.hidden : styles.tileContainer}>
+
+            {noResults && !loading ? alert : null}
+
+            <div className={loading || noResults ? styles.hidden : styles.tileContainer}>
                 {results}
             </div>            
-            {spinner}
-            <SearchPagination 
-                pageCount={pageCount}
-                currentPage={currentPage}
-                onClick={selectPage}
-            />
+
+            <div className={loading || !results ? styles.hidden : null}>
+                <SearchPagination 
+                    pageCount={pageCount}
+                    currentPage={props.currentPage}
+                    onClick={selectPage}
+                />
+            </div>
+
+            <Spinner 
+                className={loading ? styles.spinner : styles.hidden} 
+                animation="border" 
+                variant="info"
+            >
+                <span className="sr-only">Loading...</span>
+            </Spinner>
         </div>
     )
 }

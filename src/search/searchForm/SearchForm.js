@@ -25,6 +25,7 @@ export const SearchForm = (props) => {
         props.toggleAccordion()
 
         const params = {
+            searchType: "detailed",
             sort,
             adult: adult === "true",
             minRating,
@@ -44,13 +45,11 @@ export const SearchForm = (props) => {
         }
 
         setValid(true)
-        props.setAdvancedParams(params)   
+        props.handleParams(params)   
     }
 
-    console.log(props)
-
     const genreOptions = props.genres.map(genre => {
-        return <option value={genre.id}>{genre.name}</option>
+        return <option value={genre.id} key={genre.id}>{genre.name}</option>
     })
 
     return (

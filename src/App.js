@@ -11,33 +11,61 @@ import './App.css';
 
 function App() {
   const [genres, setGenres] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [searchParams, setSearchParams] = useState({
+      searchType: "detailed",
+      sort: "popularity",
+      minRating: 7.5,
+      minVotes: 200
+  })
 
   useEffect(() => {
       Api.getGenres().then(json => setGenres(json.genres))
-  }, []) 
+  }, [])
+
+  const handleParams = (params) => {
+    setSearchParams(params)
+    setCurrentPage(1)
+  }
 
   return (
     <div className="App bg-secondary">
-      <SiteNav/>
+      <SiteNav handleParams={handleParams} />
 
       <div className="pageContent">
         <Switch>
-          <Route exact path="/">
-            <Homepage page={1} />
-          </Route>
-          <Route exact path="/cn-react-movie-app">
-            <Homepage page={1} />
-          </Route>
+
           <Route path="/search">
-            <Search genres={genres} />
+            <Search 
+              genres={genres} 
+              currentPage={currentPage} 
+              setCurrentPage={setCurrentPage} 
+              searchParams={searchParams} 
+              handleParams={handleParams}
+            />
           </Route>
+
           <Route path="/movie/:id">
-            <Movie genres={genres} />
+            <Movie 
+              genres={genres} 
+              currentPage={currentPage} 
+              setCurrentPage={setCurrentPage} 
+            />
           </Route>
+
+          <Route path="/">
+            <Homepage 
+              currentPage={currentPage} 
+              setCurrentPage={setCurrentPage} 
+              searchParams={searchParams} 
+              handleParams={handleParams} 
+            />
+          </Route>
+
         </Switch>
       </div>
     </div>
   );
 }
 
-export default App;
+export default App
