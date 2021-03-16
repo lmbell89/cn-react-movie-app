@@ -18,7 +18,7 @@ export const Tile = (props) => {
                 }
             }}        
         >
-            <img src={props.imgSrc} alt={`${props.title} poster`}></img>
+            <img className={styles.image} src={props.imgSrc} alt={`${props.title} poster`}></img>
             <div className={styles.info}>
                 <div className={styles.title}>{props.title}</div>
                 <div className={styles.subText}>

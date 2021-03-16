@@ -3,6 +3,7 @@
 * {
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
+
 }
 
 body {
@@ -14,9 +15,12 @@ body {
 .App {
   padding-bottom: 20px;
   min-height: 100vh;
+  display: grid;
 }
 
 .pageContent {
   padding-top: 55px;
   text-align: center;
+  width: 100%;
+  overflow: auto;
 }

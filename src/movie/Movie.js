@@ -6,7 +6,7 @@ import { Api } from '../api'
 import { SearchResults } from '../searchResults'
 import styles from './movie.module.css'
 
-export const Movie = (props) => {
+export const Movie = () => {
     const [movieData, setMovieData] = useState(null)
     const [currentPage, setCurrentPage] = useState(1)
 
@@ -17,14 +17,12 @@ export const Movie = (props) => {
         (async() => setMovieData(await Api.getMovieById(movieId)))()        
     }, [movieId])
 
-    console.log(movieData)
-
     return (
         <>
             <div className={movieData ? styles.container : styles.hidden}>
                 <Button 
                     onClick={() => history.goBack()} 
-                    variant="outline-dark"
+                    variant="dark"
                     className={styles.backButton}
                 >
                     Back

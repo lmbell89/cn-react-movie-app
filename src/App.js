@@ -46,11 +46,7 @@ function App() {
           </Route>
 
           <Route path="/movie/:id">
-            <Movie 
-              genres={genres} 
-              currentPage={currentPage} 
-              setCurrentPage={setCurrentPage} 
-            />
+            <Movie />
           </Route>
 
           <Route path="/">

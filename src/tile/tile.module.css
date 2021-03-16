@@ -7,6 +7,7 @@
     color: #ddd;
     transition: scale 0.25s;
     width: 200px;
+    max-width: 100%;
 }
 
 .tile:hover {
@@ -17,6 +18,7 @@
 
 .image {
     border-radius: 10px;
+    max-width: 100%;
 }
 
 .title {

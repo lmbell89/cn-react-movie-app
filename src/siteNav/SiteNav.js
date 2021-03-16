@@ -31,7 +31,7 @@ export const SiteNav = (props) => {
     }
 
     return (
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" fixed="top">
+        <Navbar collapseOnSelect expand="md" bg="dark" variant="dark" fixed="top">
             <Navbar.Brand as={Link} to="/" onClick={resetParams}>
                 Movies App
             </Navbar.Brand>
@@ -56,7 +56,7 @@ export const SiteNav = (props) => {
                     <FormControl 
                         type="text" 
                         placeholder="Search" 
-                        className="mr-sm-2" 
+                        className="mr-sm-2 mb-2 mb-md-0" 
                         onChange={handleChange} 
                         value={searchStr} 
                     />

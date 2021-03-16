@@ -18,9 +18,7 @@ const parseMovie = async (json) => {
         movieId: json.id,
         genres: json.genres
     }
-
-    console.log(json)
-
+    
     return movie
 }
 
