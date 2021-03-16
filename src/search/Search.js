@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react'
+import React, { useRef } from 'react'
+import { useHistory } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import Accordion from 'react-bootstrap/Accordion'
 import Card from 'react-bootstrap/Card'
@@ -8,17 +9,15 @@ import { SearchForm } from './searchForm'
 import styles from './search.module.css'
 
 export const Search = (props) => {
-    const [firstVisit, setFirstVisit] = useState(props.searchParams.searchType !== "basic")
+    const history = useHistory()
+    const blankSearch = history.action !== "POP" && 
+        props.searchParams.searchType !== "basic"
 
     const toggleButton = useRef()
-    const toggleAccordion = () => {
-        setFirstVisit(false)
-        toggleButton.current.click()
-    }
 
     return (
         <>
-            <Accordion defaultActiveKey={firstVisit ? "0" : null}>
+            <Accordion defaultActiveKey={blankSearch ? "0" : null}>
                 <Card bg="secondary">
                     <Card.Header>
                         <Accordion.Toggle 
@@ -34,7 +33,7 @@ export const Search = (props) => {
                         <Card.Body>
                             <SearchForm
                                 genres={props.genres}
-                                toggleAccordion={toggleAccordion}
+                                toggleAccordion={() => toggleButton.current.click()}
                                 handleParams={props.handleParams}
                             />
                         </Card.Body>
@@ -43,7 +42,7 @@ export const Search = (props) => {
             </Accordion>
 
 
-            <div className={firstVisit ? styles.hidden : null}>
+            <div className={blankSearch ? styles.hidden : null}>
                 <SearchResults 
                     searchParams={props.searchParams}
                     currentPage={props.currentPage}
