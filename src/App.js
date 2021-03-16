@@ -6,6 +6,7 @@ import { SiteNav } from './siteNav'
 import { Homepage } from './homepage'
 import { Search } from './search'
 import { Movie } from './movie'
+import { PageNotFound } from './pageNotFound'
 import { Api } from './api'
 import './App.css';
 
@@ -49,13 +50,17 @@ function App() {
             <Movie />
           </Route>
 
-          <Route path="/">
+          <Route exact path={["/", "/cn-react-movie-app"]}>
             <Homepage 
               currentPage={currentPage} 
               setCurrentPage={setCurrentPage} 
               searchParams={searchParams} 
               handleParams={handleParams} 
             />
+          </Route>
+
+          <Route path="*">
+            <PageNotFound/>
           </Route>
 
         </Switch>
