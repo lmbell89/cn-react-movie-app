@@ -7,6 +7,7 @@ import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
 
 import logo from '../images/logo.svg'
+import styles from './siteNav.module.css'
 
 export const SiteNav = (props) => {
     const [searchStr, setSearchStr] = useState("")
@@ -35,7 +36,7 @@ export const SiteNav = (props) => {
     return (
         <Navbar collapseOnSelect expand="md" bg="dark" variant="dark" fixed="top">
             <Navbar.Brand as={Link} to="/" onClick={resetParams}>
-                <img src={logo} alt="logo" className="mr-1"></img>
+                <img src={logo} alt="logo" className={styles.logo}></img>
                 Movies App
             </Navbar.Brand>
 
