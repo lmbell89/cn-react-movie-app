@@ -45,6 +45,7 @@ export const SearchResults = (props) => {
             data = await Api.getSimilarMovies(params.movieId, params.page)
         }
 
+
         if (!data || !data.totalItems) {
             setNoResults(true)  
         } else {

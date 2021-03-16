@@ -60,8 +60,7 @@ export const Movie = () => {
             <h2 className={styles.similarFilms}>Similar Films</h2>
 
             <SearchResults 
-                searchParams={{movieId: movieId}} 
-                searchType="similar"
+                searchParams={{movieId: movieId, searchType: "similar"}} 
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
             />
