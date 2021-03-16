@@ -9,7 +9,6 @@ import { SearchPagination } from './searchPagination'
 import styles from './searchResults.module.css'
 
 export const SearchResults = (props) => {
-    //const [currentPage, setCurrentPage] = useState(1)
     const [results, setResults] = useState(null)
     const [pageCount, setPageCount] = useState(0)
     const [loading, setLoading] = useState(false)

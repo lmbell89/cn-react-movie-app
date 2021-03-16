@@ -1,12 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import ToggleButton from 'react-bootstrap/ToggleButton'
 
 import { SearchResults } from '../searchResults'
 
 export const Homepage = (props) => {
-    const [sortBy, setSortBy] = useState('popularity')
-
     const sortButtons = [
         { name: 'Most Popular', value: 'popularity' },
         { name: 'New Releases', value: 'date' },
@@ -20,8 +18,6 @@ export const Homepage = (props) => {
             minRating: 7.5,
             minVotes: 200
         }
-
-        setSortBy(e.currentTarget.value)
         props.handleParams(searchParams)
     }
 
@@ -35,7 +31,7 @@ export const Homepage = (props) => {
                         variant="primary"
                         name="radio"
                         value={radio.value}
-                        checked={sortBy === radio.value}
+                        checked={props.searchParams.sort === radio.value}
                         onChange={handleChange}
                     >
                         {radio.name}
