@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import Accordion from 'react-bootstrap/Accordion'
@@ -10,14 +10,21 @@ import styles from './search.module.css'
 
 export const Search = (props) => {
     const history = useHistory()
-    const blankSearch = history.action !== "POP" && 
+    const [noResults, setNoResults] = useState(
+        history.action !== "POP" && 
         props.searchParams.searchType !== "basic"
+    )
+
+    const handleSearch = () => {
+        setNoResults(false)
+        toggleButton.current.click()
+    }
 
     const toggleButton = useRef()
 
     return (
         <>
-            <Accordion defaultActiveKey={blankSearch ? "0" : null}>
+            <Accordion defaultActiveKey={noResults ? "0" : null}>
                 <Card bg="secondary">
                     <Card.Header>
                         <Accordion.Toggle 
@@ -33,7 +40,7 @@ export const Search = (props) => {
                         <Card.Body>
                             <SearchForm
                                 genres={props.genres}
-                                toggleAccordion={() => toggleButton.current.click()}
+                                handleSearch={handleSearch}
                                 handleParams={props.handleParams}
                             />
                         </Card.Body>
@@ -42,7 +49,7 @@ export const Search = (props) => {
             </Accordion>
 
 
-            <div className={blankSearch ? styles.hidden : null}>
+            <div className={noResults ? styles.hidden : null}>
                 <SearchResults 
                     searchParams={props.searchParams}
                     currentPage={props.currentPage}

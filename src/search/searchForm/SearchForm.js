@@ -22,7 +22,7 @@ export const SearchForm = (props) => {
             return
         }
 
-        props.toggleAccordion()
+        props.handleSearch()
 
         const params = {
             searchType: "detailed",
