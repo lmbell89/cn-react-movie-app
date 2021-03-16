@@ -6,7 +6,7 @@ import { Api } from '../api'
 import { SearchResults } from '../searchResults'
 import styles from './movie.module.css'
 
-export const Movie = () => {
+export const Movie = (props) => {
     const [movieData, setMovieData] = useState(null)
     const [currentPage, setCurrentPage] = useState(1)
 
@@ -16,6 +16,8 @@ export const Movie = () => {
     useEffect(() => {
         (async() => setMovieData(await Api.getMovieById(movieId)))()        
     }, [movieId])
+
+    console.log(movieData)
 
     return (
         <>
@@ -33,7 +35,15 @@ export const Movie = () => {
                     src={movieData?.imgSrc} 
                     alt={`${movieData?.title} poster`}
                 />
-                <div className={styles.title}>{movieData?.title}</div>            
+                <div className={styles.title}>{movieData?.title}</div>
+
+                <div>
+                    Genres: 
+                    <span className={styles.genres}>
+                        {movieData?.genres?.map(genre => genre.name).join(", ")}
+                    </span>
+                </div>
+
                 <div>
                     <div>
                         Averate Rating:

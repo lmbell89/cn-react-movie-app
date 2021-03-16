@@ -18,6 +18,14 @@
     font-weight: bold;
 }
 
+.genres {
+    font-weight: bold;
+}
+
+.genres::before {
+    content: " ";
+}
+
 .voteAvg {
     color: #fc0;
     font-weight: bold;

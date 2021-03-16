@@ -15,8 +15,11 @@ const parseMovie = async (json) => {
         voteAvg: json.vote_average.toFixed(1),
         releaseDate: json.release_date,
         overview: json.overview,
-        movieId: json.id
+        movieId: json.id,
+        genres: json.genres
     }
+
+    console.log(json)
 
     return movie
 }
