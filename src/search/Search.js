@@ -42,6 +42,7 @@ export const Search = (props) => {
                                 genres={props.genres}
                                 handleSearch={handleSearch}
                                 handleParams={props.handleParams}
+                                searchParams={props.searchParams}
                             />
                         </Card.Body>
                     </Accordion.Collapse>

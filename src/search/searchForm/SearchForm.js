@@ -4,14 +4,23 @@ import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 
 export const SearchForm = (props) => {
-    const [minRating, setMinRating] = useState(7.5)
-    const [year, setYear] = useState(2010)
-    const [dateFilter, setDateFilter] = useState("after")
-    const [genre, setGenre] = useState("any")
-    const [foreign, setForeign] = useState("false")
-    const [adult, setAdult] = useState("false")
-    const [sort, setSort] = useState("popularity")
+    const [minRating, setMinRating] = useState(props.searchParams.minRating)
+    const [genre, setGenre] = useState(props.searchParams.genre)
+    const [foreign, setForeign] = useState(!props.searchParams.englishOnly)
+    const [adult, setAdult] = useState(props.searchParams.adult)
+    const [sort, setSort] = useState(props.searchParams.sort)
     const [valid, setValid] = useState(true)
+
+    const [year, setYear] = useState(
+        props.searchParams.year || 
+        props.searchParams.earliestDate?.substr(0,4) ||
+        props.searchParams.latestDate?.substr(0,4) || 2010
+    )
+    const [dateFilter, setDateFilter] = useState(
+        props.searchParams.year ? "during" :
+        props.searchParams.latestDate ? "before" :
+        "after"
+    )
 
     const handleSubmit = (event) => {
         event.preventDefault()
